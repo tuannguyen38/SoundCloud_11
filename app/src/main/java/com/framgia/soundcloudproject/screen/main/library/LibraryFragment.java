@@ -1,11 +1,6 @@
 package com.framgia.soundcloudproject.screen.main.library;
 
 import android.os.Bundle;
-<<<<<<<HEAD
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-=======
-        >>>>>>>Init tab:Library
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
