@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.framgia.soundcloudproject.R;
+import com.framgia.soundcloudproject.data.source.remote.FetchTrackFromUrl;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View{
     private MainContract.Presenter mPresenter;
