@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SoundCloudProject</string>
+
+    <string name="genre_all_music">All Music</string>
+    <string name="genre_all_audio">All Audio</string>
+    <string name="genre_alternative_rock">Alternative Rock</string>
+    <string name="genre_ambient">Ambient</string>
+    <string name="genre_classical">Classical</string>
+    <string name="genre_country">Country</string>
 </resources>
