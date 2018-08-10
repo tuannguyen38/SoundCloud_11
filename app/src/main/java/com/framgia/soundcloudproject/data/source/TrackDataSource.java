@@ -1,6 +1,8 @@
 package com.framgia.soundcloudproject.data.source;
 
+import com.framgia.soundcloudproject.data.model.Playlist;
 import com.framgia.soundcloudproject.data.model.Track;
+
 import java.util.List;
 
 /**
@@ -12,6 +14,31 @@ public interface TrackDataSource {
      * Track local
      */
     interface LocalDataSource {
+
+        void getTracksLocal(OnFetchDataListener<Track> listener);
+
+        void searchTracksLocal(String trackName, OnFetchDataListener<Track> listener);
+
+        boolean deleteTrack(Track track);
+
+        void getTracksFavorite(OnFetchDataListener<Track> listener);
+
+        void addTrackToFavorite(Track track, OnQueryDatabaseListener listener);
+
+        void deleteTrackFavorite(Track track, OnQueryDatabaseListener listener);
+
+        void addTrackToPlaylist(int playlistId, OnQueryDatabaseListener listener, Track track);
+
+        void removeTrackFromPlaylist(int playlistId, OnQueryDatabaseListener listener, Track track);
+
+        void deletePlaylist(Playlist playlist, OnQueryDatabaseListener listener);
+
+        void insertPlaylist(Playlist playlist, OnQueryDatabaseListener listener);
+
+        void renamePlayList(Playlist playlist, OnQueryDatabaseListener listener);
+
+        List<Playlist> getPlaylist();
+
     }
 
     /**
@@ -26,6 +53,12 @@ public interface TrackDataSource {
     interface OnFetchDataListener<T> {
         void onFetchDataSuccess(List<T> data);
 
-        void onFetchDataFailure(Exception exception);
+        void onFetchDataFailure(Exception e);
+    }
+
+    interface OnQueryDatabaseListener {
+        void onQuerySuccess(String msg);
+
+        void onQueryFailure(Exception e);
     }
 }
