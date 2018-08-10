@@ -2,9 +2,6 @@ package com.framgia.soundcloudproject.data.model;
 
 import java.util.List;
 
-/**
- * Created by Hades on 8/9/2018.
- */
 public class Playlist {
 
     private int mId;
@@ -42,5 +39,9 @@ public class Playlist {
 
     public void setTracks(List<Track> tracks) {
         mTracks = tracks;
+    }
+
+    public int getNumTracks() {
+        return mTracks != null ? mTracks.size() : 0;
     }
 }
