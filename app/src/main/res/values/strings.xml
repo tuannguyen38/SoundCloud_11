@@ -14,4 +14,7 @@
     <string name="favorites">Favorites</string>
     <string name="playlists">Playlists</string>
     <string name="songs">Songs</string>
+    <string name="default_track_name">Unknown track</string>
+    <string name="default_author">Unknown author</string>
+    <string name="default_duration">00:00</string>
 </resources>
