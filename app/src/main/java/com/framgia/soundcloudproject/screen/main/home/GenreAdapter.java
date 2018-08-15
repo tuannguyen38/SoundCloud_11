@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.framgia.soundcloudproject.R;
 import com.framgia.soundcloudproject.data.model.Genre;
 
@@ -19,6 +21,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
     private Context mContext;
     private List<Genre> mGenres;
     private LayoutInflater mInflater;
+    private OnGenreClickListener mListener;
 
     public GenreAdapter(Context context, List<Genre> genres) {
         mContext = context;
@@ -28,17 +31,18 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(mInflater == null) {
+        if (mInflater == null) {
             mInflater = LayoutInflater.from(parent.getContext());
         }
         View view = mInflater.inflate(R.layout.item_genre, parent, false);
         return new ViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Genre genre = mGenres.get(position);
-        holder.bindView(genre);
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        final Genre genre = mGenres.get(position);
+        holder.bindView(genre, mListener);
     }
 
     @Override
@@ -56,11 +60,28 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
             mImageViewGenre = itemView.findViewById(R.id.image_genre);
         }
 
-        public void bindView(Genre genre) {
+        public void bindView(final Genre genre, final OnGenreClickListener listener) {
             mTextViewGenre.setText(genre.getGenreString());
-            Glide.with(mImageViewGenre)
-                    .load(genre.getGenreImage())
-                    .into(mImageViewGenre);
+            Glide.with(mImageViewGenre).load(genre.getGenreImage()).into(mImageViewGenre);
+            mImageViewGenre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onGenreClicked(genre.getName());
+                }
+            });
         }
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.mGenres = genres;
+        notifyDataSetChanged();
+    }
+
+    public void setOnGenreClickListener(OnGenreClickListener listener) {
+        mListener = listener;
+    }
+
+    interface OnGenreClickListener {
+        void onGenreClicked(String genre);
     }
 }

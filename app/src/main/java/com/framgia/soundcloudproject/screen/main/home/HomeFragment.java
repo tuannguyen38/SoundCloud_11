@@ -13,16 +13,24 @@ import com.framgia.soundcloudproject.R;
 import com.framgia.soundcloudproject.data.model.Genre;
 import com.framgia.soundcloudproject.data.repository.GenreRepository;
 import com.framgia.soundcloudproject.data.source.local.GenresLocalDataSource;
+import com.framgia.soundcloudproject.screen.main.genredetail.GenreDetailFragment;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements HomeContract.View {
+public class HomeFragment extends Fragment implements HomeContract.View, GenreAdapter.OnGenreClickListener {
     private Context mContext;
     private HomeContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
+    private GenreAdapter mGenreAdapter;
+    private GenreDetailFragment detailFragment;
 
     public HomeFragment() {
-        // Required empty public constructor
+    }
+
+    public static HomeFragment newInstance() {
+        HomeFragment homeFragment = new HomeFragment();
+        // TODO
+        return homeFragment;
     }
 
     @Override
@@ -35,21 +43,32 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         mRecyclerView = view.findViewById(R.id.recyclerview_genre);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
+        mGenreAdapter = new GenreAdapter(mContext, null);
+        mRecyclerView.setAdapter(mGenreAdapter);
+        mGenreAdapter.setOnGenreClickListener(this);
         mPresenter = new HomePresenter(this,
                 GenreRepository.getInstance(new GenresLocalDataSource()));
         mPresenter.loadGenres();
-
         return view;
     }
 
     @Override
     public void showGenres(List<Genre> genres) {
-        GenreAdapter adapter = new GenreAdapter(mContext, genres);
-        mRecyclerView.setAdapter(adapter);
+        mGenreAdapter.setGenres(genres);
+    }
+
+    private void gotoDetailFragment(String genre) {
+        if (detailFragment == null) {
+            detailFragment = GenreDetailFragment.newInstance(genre);
+        }
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_genre_container, detailFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
-    public void showSongsByGenre() {
-        // TODO Show list song by genre
+    public void onGenreClicked(String genre) {
+        gotoDetailFragment(genre);
     }
 }
