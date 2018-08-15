@@ -32,14 +32,8 @@ public class TrackRepository implements TrackDataSource.LocalDataSource, TrackDa
     }
 
     /**
-     * Track Remote
+     * Track Local
      */
-    @Override
-    public void getTracksLocal(TrackDataSource.OnFetchDataListener<Track> listener) {
-        if (mLocalDataSource != null) {
-            mLocalDataSource.getTracksLocal(listener);
-        }
-    }
 
     @Override
     public List<Playlist> getPlaylist() {
@@ -47,17 +41,13 @@ public class TrackRepository implements TrackDataSource.LocalDataSource, TrackDa
     }
 
     @Override
-    public void getTracksFavorite(TrackDataSource.OnFetchDataListener<Track> listener) {
-        if (mLocalDataSource != null) {
-            mLocalDataSource.getTracksFavorite(listener);
-        }
+    public List<Track> getTrackInPlaylist(Playlist playlist) {
+        return mLocalDataSource != null ? mLocalDataSource.getTrackInPlaylist(playlist) : null;
     }
 
     @Override
-    public void searchTracksLocal(String trackName, TrackDataSource.OnFetchDataListener<Track> listener) {
-        if (mLocalDataSource != null) {
-            mLocalDataSource.searchTracksLocal(trackName, listener);
-        }
+    public List<Track> getTracksFavorite() {
+        return mLocalDataSource != null ? mLocalDataSource.getTracksFavorite() : null;
     }
 
     @Override
