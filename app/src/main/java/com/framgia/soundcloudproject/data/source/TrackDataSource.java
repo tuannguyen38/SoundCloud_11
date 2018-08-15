@@ -15,13 +15,9 @@ public interface TrackDataSource {
      */
     interface LocalDataSource {
 
-        void getTracksLocal(OnFetchDataListener<Track> listener);
-
-        void searchTracksLocal(String trackName, OnFetchDataListener<Track> listener);
-
         boolean deleteTrack(Track track);
 
-        void getTracksFavorite(OnFetchDataListener<Track> listener);
+        List<Track> getTracksFavorite();
 
         void addTrackToFavorite(Track track, OnQueryDatabaseListener listener);
 
@@ -38,6 +34,8 @@ public interface TrackDataSource {
         void renamePlayList(Playlist playlist, OnQueryDatabaseListener listener);
 
         List<Playlist> getPlaylist();
+
+        List<Track> getTrackInPlaylist(Playlist playlist);
 
     }
 
