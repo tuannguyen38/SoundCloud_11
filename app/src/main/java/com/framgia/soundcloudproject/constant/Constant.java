@@ -22,4 +22,6 @@ public class Constant {
     public static final String TRACK_QUERY_FORMAT = "%s%s%s&%s=%s&%s=%d&%s=%d";
     public static final String SEARCH_QUERY_FORMAT = "%s%s%s&%s=%d&%s=%s";
     public static final String BREAK_LINE = "\n";
+    public static final String UNKNOWN = "<unknown>";
+    public static final String GENRE_TYPE = "GENRE_TYPE";
 }
