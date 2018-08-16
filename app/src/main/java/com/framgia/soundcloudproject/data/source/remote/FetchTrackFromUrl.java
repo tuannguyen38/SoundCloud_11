@@ -1,6 +1,7 @@
 package com.framgia.soundcloudproject.data.source.remote;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.constant.TrackEntity;
@@ -58,23 +59,31 @@ public class FetchTrackFromUrl extends AsyncTask<String, Void, List<Track>> {
 
     private List<Track> getTracksFromJson(String data) throws JSONException {
         List<Track> tracks = new ArrayList<>();
-        JSONArray jsonArray = new JSONArray(data);
+        JSONObject object = new JSONObject(data);
+        JSONArray jsonArray = object.getJSONArray(TrackEntity.COLLECTION);
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = new JSONObject(jsonArray.getString(i));
+            JSONObject jsonObject = jsonArray.getJSONObject(i).getJSONObject(TrackEntity.TRACK);
 
-            String artworkUrl = jsonObject.getString(TrackEntity.ARTWORK_URL);
-            String description = jsonObject.getString(TrackEntity.DESCRIPTION);
+            String artworkUrl = jsonObject.optString(TrackEntity.ARTWORK_URL);
+            if (artworkUrl.isEmpty()) {
+                artworkUrl = jsonObject.getJSONObject(TrackEntity.USER)
+                        .optString(TrackEntity.AVATAR_URL);
+            }
+            String description = jsonObject.optString(TrackEntity.DESCRIPTION);
             boolean downloadable = jsonObject.getBoolean(TrackEntity.DOWNLOADABLE);
-            String downloadUrl = jsonObject.getString(TrackEntity.DOWNLOAD_URL);
+            String downloadUrl = jsonObject.optString(TrackEntity.DOWNLOAD_URL);
             int downloadCount = jsonObject.getInt(TrackEntity.DOWNLOAD_COUNT);
             int fullDuration = jsonObject.getInt(TrackEntity.FULL_DURATION);
-            String genre = jsonObject.getString(TrackEntity.GENRE);
+            String genre = jsonObject.optString(TrackEntity.GENRE);
             int id = jsonObject.getInt(TrackEntity.ID);
             int likeCount = jsonObject.getInt(TrackEntity.LIKE_COUNT);
-            String title = jsonObject.getString(TrackEntity.TITLE);
-            String uri = jsonObject.getString(TrackEntity.URI);
-            String publisherAlbumTitle = jsonObject.getJSONObject(TrackEntity.PUBLISHER_METADATA)
-                    .getString(TrackEntity.PUBLISHER_ALBUM_TITLE);
+            String title = jsonObject.optString(TrackEntity.TITLE);
+            String uri = jsonObject.optString(TrackEntity.URI);
+            JSONObject publisherObject = jsonObject.optJSONObject(TrackEntity.PUBLISHER_METADATA);
+            String publisherArtist = null;
+            if (publisherObject != null) {
+                publisherArtist = publisherObject.optString(TrackEntity.PUBLISHER_ARTIST, Constant.UNKNOWN);
+            }
 
             Track track = new Track.Builder()
                     .withArtworkUrl(artworkUrl)
@@ -88,7 +97,7 @@ public class FetchTrackFromUrl extends AsyncTask<String, Void, List<Track>> {
                     .withLikesCount(likeCount)
                     .withTitle(title)
                     .withUri(uri)
-                    .withPublisherAlbumTitle(publisherAlbumTitle)
+                    .withPublisherAlbumTitle(publisherArtist)
                     .build();
 
             tracks.add(track);

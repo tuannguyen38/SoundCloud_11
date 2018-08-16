@@ -7,6 +7,10 @@ import android.support.annotation.StringDef;
  */
 
 @StringDef({
+        TrackEntity.COLLECTION,
+        TrackEntity.USER,
+        TrackEntity.AVATAR_URL,
+        TrackEntity.TRACK,
         TrackEntity.ARTWORK_URL,
         TrackEntity.DESCRIPTION,
         TrackEntity.DOWNLOADABLE,
@@ -19,11 +23,15 @@ import android.support.annotation.StringDef;
         TrackEntity.TITLE,
         TrackEntity.URI,
         TrackEntity.PUBLISHER_METADATA,
-        TrackEntity.PUBLISHER_ALBUM_TITLE}
+        TrackEntity.PUBLISHER_ARTIST}
 )
 
 public @interface TrackEntity {
 
+    String COLLECTION = "collection";
+    String USER = "user";
+    String AVATAR_URL = "avatar_url";
+    String TRACK = "track";
     String ARTWORK_URL = "artwork_url";
     String DESCRIPTION = "description";
     String DOWNLOADABLE = "downloadable";
@@ -38,5 +46,5 @@ public @interface TrackEntity {
     String USER_ID = "user_id";
     String DISPLAY_DATE = "display_date";
     String PUBLISHER_METADATA = "publisher_metadata";
-    String PUBLISHER_ALBUM_TITLE = "album_title";
+    String PUBLISHER_ARTIST = "artist";
 }
