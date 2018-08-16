@@ -10,5 +10,7 @@
     <color name="color_gray_600">#757575</color>
     <color name="color_gray_400">#BDBDBD</color>
     <color name="color_gray_300">#dedede</color>
+    <color name="color_bismark">#4E6988</color>
+    <color name="color_black">#000000</color>
 
 </resources>

@@ -19,9 +19,4 @@ public class HomePresenter implements HomeContract.Presenter {
         List<Genre> genres = mGenreRepository.getGenres();
         mView.showGenres(genres);
     }
-
-    @Override
-    public void loadSongsByGenre() {
-        // TODO Get list song by genre
-    }
 }

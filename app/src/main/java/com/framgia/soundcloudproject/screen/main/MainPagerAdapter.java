@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.constant.TabEntity;
 import com.framgia.soundcloudproject.screen.main.download.DownloadFragment;
+import com.framgia.soundcloudproject.screen.main.genredetail.GenreDetailFragment;
 import com.framgia.soundcloudproject.screen.main.home.HomeFragment;
 import com.framgia.soundcloudproject.screen.main.library.LibraryFragment;
 
@@ -27,7 +28,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case TabEntity.TAB_HOME:
                 // Update next by getInstance()
-                return new HomeFragment();
+                return HomeFragment.newInstance();
             case TabEntity.TAB_DOWNLOAD:
                 // Update next by getInstance()
                 return new DownloadFragment();
@@ -36,7 +37,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return new LibraryFragment();
             default:
                 // Update next by getInstance()
-                return new HomeFragment();
+                return HomeFragment.newInstance();
         }
     }
 
