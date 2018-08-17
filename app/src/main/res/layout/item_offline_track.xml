@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_90">
+
+    <ImageView
+        android:id="@+id/image_offline_track"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_70"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_disc"/>
+
+    <TextView
+        android:id="@+id/text_offline_title"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_8"
+        android:maxLines="1"
+        android:text="@string/default_track_name"
+        app:layout_constraintEnd_toStartOf="@+id/image_offline_options"
+        app:layout_constraintStart_toEndOf="@+id/image_offline_track"
+        app:layout_constraintTop_toTopOf="@+id/image_offline_track" />
+
+    <TextView
+        android:id="@+id/text_offline_artist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        android:maxLines="1"
+        android:textColor="@color/color_gray_900"
+        android:text="@string/default_author"
+        app:layout_constraintBottom_toBottomOf="@+id/image_offline_track"
+        app:layout_constraintEnd_toStartOf="@+id/image_offline_options"
+        app:layout_constraintStart_toEndOf="@+id/image_offline_track"
+        app:layout_constraintTop_toBottomOf="@+id/text_offline_title" />
+
+    <TextView
+        android:id="@+id/text_offline_duration"
+        style="?android:attr/textAppearanceSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textSize="@dimen/sp_13"
+        android:text="@string/default_duration"
+        app:layout_constraintBottom_toTopOf="@+id/image_offline_options"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_offline_artist"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_offline_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        android:paddingEnd="@dimen/dp_8"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_more_vert" />
+
+</android.support.constraint.ConstraintLayout>

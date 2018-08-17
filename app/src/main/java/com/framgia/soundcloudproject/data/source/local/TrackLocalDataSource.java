@@ -1,6 +1,10 @@
 package com.framgia.soundcloudproject.data.source.local;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 
 import com.framgia.soundcloudproject.R;
 import com.framgia.soundcloudproject.data.model.Playlist;
@@ -8,7 +12,8 @@ import com.framgia.soundcloudproject.data.model.Track;
 import com.framgia.soundcloudproject.data.source.TrackDataSource;
 import com.framgia.soundcloudproject.data.source.local.sqlite.TrackDatabaseHelper;
 
-import java.sql.SQLException;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,9 +21,10 @@ import java.util.List;
  */
 public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
 
+    private static final String SORT_ORDER_ASCENDING = "ASC";
     private static TrackLocalDataSource sInstance;
-    private TrackDatabaseHelper mDatabaseHelper;
     private Context mContext;
+    private TrackDatabaseHelper mDatabaseHelper;
 
     private TrackLocalDataSource(Context context) {
         mContext = context;
@@ -33,6 +39,43 @@ public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
         if (sInstance == null) {
             sInstance = new TrackLocalDataSource(context);
         }
+    }
+
+    @Override
+    public void getOfflineTracks(TrackDataSource.OnFetchDataListener<Track> listener) {
+        List<Track> tracks = new ArrayList<>();
+        ContentResolver resolver = mContext.getContentResolver();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = new String[]{
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.DURATION
+        };
+        String sortByTitleAscending = MediaStore.Audio.Media.TITLE + " " + SORT_ORDER_ASCENDING;
+        Cursor cursor = resolver.query(uri,
+                projection,
+                null,
+                null,
+                sortByTitleAscending);
+
+        if (cursor == null) {
+            listener.onFetchDataFailure(new Exception(mContext.getString(R.string.error_load_data)));
+            return;
+        }
+        while (cursor.moveToNext()) {
+            Track track = parseTrackFromRow(cursor);
+            tracks.add(track);
+        }
+        cursor.close();
+        listener.onFetchDataSuccess(tracks);
+    }
+
+    @Override
+    public boolean deleteOfflineTrack(Track track) {
+        File file = new File(track.getUri());
+        return file.delete();
     }
 
     @Override
@@ -111,5 +154,16 @@ public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
             mDatabaseHelper.updatePlaylist(playlist);
             listener.onQuerySuccess(mContext.getString(R.string.msg_save_changes));
         }
+    }
+
+    private Track parseTrackFromRow(Cursor cursor) {
+        Track track = new Track.Builder().build();
+        track.setId(cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
+        track.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
+        track.setPublisherAlbumTitle(cursor.getString(
+                cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
+        track.setUri(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
+        track.setFullDuration(cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)));
+        return track;
     }
 }
