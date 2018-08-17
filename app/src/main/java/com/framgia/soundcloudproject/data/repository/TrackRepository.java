@@ -34,6 +34,17 @@ public class TrackRepository implements TrackDataSource.LocalDataSource, TrackDa
     /**
      * Track Local
      */
+    @Override
+    public void getOfflineTracks(TrackDataSource.OnFetchDataListener<Track> listener) {
+        if (mLocalDataSource != null) {
+            mLocalDataSource.getOfflineTracks(listener);
+        }
+    }
+
+    @Override
+    public boolean deleteOfflineTrack(Track track) {
+        return mLocalDataSource.deleteOfflineTrack(track);
+    }
 
     @Override
     public List<Playlist> getPlaylist() {

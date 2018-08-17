@@ -11,7 +11,6 @@ import com.framgia.soundcloudproject.constant.TrackEntity;
 import com.framgia.soundcloudproject.data.model.Playlist;
 import com.framgia.soundcloudproject.data.model.Track;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
                     TrackEntity.GENRE + " TEXT, " +
                     TrackEntity.LIKE_COUNT + " INTEGER, " +
                     TrackEntity.URI + " TEXT, " +
-                    TrackEntity.PUBLISHER_ALBUM_TITLE + " TEXT);";
+                    TrackEntity.PUBLISHER_ARTIST + " TEXT);";
 
     private static final String SQL_CREATE_PLAYLIST_ENTRIES =
             "CREATE TABLE " + TrackEntry.TABLE_NAME_PLAYLIST + "(" +
@@ -94,7 +93,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
         values.put(TrackEntity.GENRE, track.getGenre());
         values.put(TrackEntity.LIKE_COUNT, track.getLikesCount());
         values.put(TrackEntity.URI, track.getUri());
-        values.put(TrackEntity.PUBLISHER_ALBUM_TITLE, track.getPublisherAlbumTitle());
+        values.put(TrackEntity.PUBLISHER_ARTIST, track.getPublisherAlbumTitle());
 
         database.insert(TrackEntry.TABLE_NAME_TRACK, null, values);
         database.close();
@@ -269,6 +268,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             tracks.add(parseTrackFromRow(cursor));
         }
+        cursor.close();
         database.close();
         return tracks;
     }
@@ -286,6 +286,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(playlist.getId())});
         int count = cursor.getCount();
+        cursor.close();
         database.close();
         return count;
     }
@@ -357,7 +358,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
             track.setGenre(cursor.getString(cursor.getColumnIndexOrThrow(TrackEntity.GENRE)));
             track.setLikesCount(cursor.getInt(cursor.getColumnIndexOrThrow(TrackEntity.LIKE_COUNT)));
             track.setUri(cursor.getString(cursor.getColumnIndexOrThrow(TrackEntity.URI)));
-            track.setPublisherAlbumTitle(cursor.getString(cursor.getColumnIndexOrThrow(TrackEntity.PUBLISHER_ALBUM_TITLE)));
+            track.setPublisherAlbumTitle(cursor.getString(cursor.getColumnIndexOrThrow(TrackEntity.PUBLISHER_ARTIST)));
 
             int downloadable = cursor.getInt(cursor.getColumnIndexOrThrow(TrackEntity.DOWNLOADABLE));
             if (downloadable == 1) {

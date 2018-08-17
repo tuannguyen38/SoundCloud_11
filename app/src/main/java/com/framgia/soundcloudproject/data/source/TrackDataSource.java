@@ -14,6 +14,9 @@ public interface TrackDataSource {
      * Track local
      */
     interface LocalDataSource {
+        void getOfflineTracks(OnFetchDataListener<Track> listener);
+
+        boolean deleteOfflineTrack(Track track);
 
         boolean deleteTrack(Track track);
 

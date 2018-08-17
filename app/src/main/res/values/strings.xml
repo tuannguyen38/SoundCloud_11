@@ -22,13 +22,17 @@
     <string name="msg_deleted">Deleted</string>
     <string name="msg_success">Successful</string>
     <string name="error">Error</string>
+    <string name="error_load_data">Can\'t load data</string>
     <string name="error_track_not_exist">Track does not exist</string>
     <string name="error_track_added_favorite">The track was added to favorite</string>
     <string name="error_playlist_not_exist">Playlist does not exist</string>
+    <string name="error_permission_denied">Permission denied</string>
     <string name="msg_no_track_available">No track available now</string>
     <string name="action_add_to_next_up">Add to Next up</string>
     <string name="action_add_to_playlist">Add to Playlist</string>
     <string name="action_add_to_favorite">Add to Favorite</string>
     <string name="action_download">Download</string>
     <string name="action_show_playlist">Playlist</string>
+    <string name="action_play">Play</string>
+    <string name="action_delete">Delete</string>
 </resources>
