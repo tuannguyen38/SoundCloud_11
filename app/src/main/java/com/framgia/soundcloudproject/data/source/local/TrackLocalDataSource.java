@@ -136,6 +136,9 @@ public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
 
     @Override
     public void addTrackToFavorite(Track track, TrackDataSource.OnQueryDatabaseListener listener) {
+        if (mDatabaseHelper.getTrackById(track.getId()) == null) {
+            mDatabaseHelper.insertTrack(track);
+        }
         mDatabaseHelper.addTrackToFavorite(track);
         listener.onQuerySuccess(mContext.getString(R.string.msg_added));
     }
