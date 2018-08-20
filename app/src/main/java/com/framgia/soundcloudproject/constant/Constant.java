@@ -24,4 +24,5 @@ public class Constant {
     public static final String BREAK_LINE = "\n";
     public static final String UNKNOWN = "<unknown>";
     public static final String GENRE_TYPE = "GENRE_TYPE";
+    public static final String STORAGE = "/storage/";
 }
