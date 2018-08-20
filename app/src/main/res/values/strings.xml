@@ -35,4 +35,9 @@
     <string name="action_show_playlist">Playlist</string>
     <string name="action_play">Play</string>
     <string name="action_delete">Delete</string>
+    <string name="channel_name">my_package_channel</string>
+    <string name="channel_description">my_package_first_channel</string>
+    <string name="channel_id">my_package_channel_1</string>
+    <string name="next_up">Next up</string>
+
 </resources>
