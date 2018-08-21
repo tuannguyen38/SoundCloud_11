@@ -14,6 +14,8 @@ public interface TrackDataSource {
      * Track local
      */
     interface LocalDataSource {
+        void getOfflineTracksInFolder(String folderName, OnFetchDataListener<Track> listener);
+
         void getOfflineTracks(OnFetchDataListener<Track> listener);
 
         boolean deleteOfflineTrack(Track track);
@@ -40,6 +42,9 @@ public interface TrackDataSource {
 
         List<Track> getTrackInPlaylist(Playlist playlist);
 
+        boolean isTrackInFavorite(Track track);
+
+        boolean isTrackInPlaylist(Track track, Playlist playlist);
     }
 
     /**

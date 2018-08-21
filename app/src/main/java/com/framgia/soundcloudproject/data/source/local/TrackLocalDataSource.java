@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.framgia.soundcloudproject.R;
+import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.data.model.Playlist;
 import com.framgia.soundcloudproject.data.model.Track;
 import com.framgia.soundcloudproject.data.source.TrackDataSource;
@@ -16,12 +17,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.framgia.soundcloudproject.data.source.local.sqlite.TrackDatabaseHelper.LIKE_CONDITION;
+
 /**
  * Created by Hades on 8/8/2018.
  */
 public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
 
-    private static final String SORT_ORDER_ASCENDING = "ASC";
     private static TrackLocalDataSource sInstance;
     private Context mContext;
     private TrackDatabaseHelper mDatabaseHelper;
@@ -42,6 +44,45 @@ public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
     }
 
     @Override
+    public void getOfflineTracksInFolder(String folderName,
+                                         TrackDataSource.OnFetchDataListener<Track> listener) {
+        List<Track> tracks = new ArrayList<>();
+        ContentResolver resolver = mContext.getContentResolver();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = new String[]{
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.DURATION
+        };
+        String selection = String.format(Constant.DB_QUERY_LIKE_SELECTION, MediaStore.Audio.Media.DATA);
+        String[] selectionArgs = new String[]{
+                new StringBuilder()
+                        .append(Constant.PERCENT).append(folderName).append(Constant.PERCENT)
+                        .toString()
+        };
+        String sortByTitleAscending = String.format(Constant.DB_SORT_COLUMN_ASC,
+                MediaStore.Audio.Media.TITLE);
+        Cursor cursor = resolver.query(uri,
+                projection,
+                selection,
+                selectionArgs,
+                sortByTitleAscending);
+
+        if (cursor == null) {
+            listener.onFetchDataFailure(new Exception(mContext.getString(R.string.error_load_data)));
+            return;
+        }
+        while (cursor.moveToNext()) {
+            Track track = parseTrackFromRow(cursor);
+            tracks.add(track);
+        }
+        cursor.close();
+        listener.onFetchDataSuccess(tracks);
+    }
+
+    @Override
     public void getOfflineTracks(TrackDataSource.OnFetchDataListener<Track> listener) {
         List<Track> tracks = new ArrayList<>();
         ContentResolver resolver = mContext.getContentResolver();
@@ -53,7 +94,8 @@ public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
                 MediaStore.Audio.Media.DATA,
                 MediaStore.Audio.Media.DURATION
         };
-        String sortByTitleAscending = MediaStore.Audio.Media.TITLE + " " + SORT_ORDER_ASCENDING;
+        String sortByTitleAscending = String.format(Constant.DB_SORT_COLUMN_ASC,
+                MediaStore.Audio.Media.TITLE);
         Cursor cursor = resolver.query(uri,
                 projection,
                 null,
@@ -86,6 +128,16 @@ public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
     @Override
     public List<Track> getTrackInPlaylist(Playlist playlist) {
         return mDatabaseHelper.getAllTracksInPlaylist(playlist);
+    }
+
+    @Override
+    public boolean isTrackInFavorite(Track track) {
+        return mDatabaseHelper.isTrackInFavorite(track);
+    }
+
+    @Override
+    public boolean isTrackInPlaylist(Track track, Playlist playlist) {
+        return mDatabaseHelper.isTrackInPlaylist(track, playlist);
     }
 
     @Override
@@ -136,6 +188,7 @@ public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
 
     @Override
     public void addTrackToFavorite(Track track, TrackDataSource.OnQueryDatabaseListener listener) {
+        if (isTrackInFavorite(track)) return;
         if (mDatabaseHelper.getTrackById(track.getId()) == null) {
             mDatabaseHelper.insertTrack(track);
         }

@@ -26,4 +26,10 @@ public class Constant {
     public static final String UNKNOWN = "<unknown>";
     public static final String GENRE_TYPE = "GENRE_TYPE";
     public static final String STORAGE = "/storage/";
+    public static final String DOWNLOAD_DIRECTORY = "SoundCloud11";
+    public static final String PERCENT = "%";
+
+    public static final String DB_QUERY_EQUAL_SELECTION = " %s = ? ";
+    public static final String DB_QUERY_LIKE_SELECTION = " %s LIKE ? ";
+    public static final String DB_SORT_COLUMN_ASC = " %s ASC ";
 }
