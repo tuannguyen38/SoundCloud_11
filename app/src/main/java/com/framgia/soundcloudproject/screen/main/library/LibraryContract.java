@@ -6,14 +6,20 @@ import java.util.List;
 
 public interface LibraryContract {
     interface Presenter {
-        void getFavoriteTracks();
+        void getFavoriteCount();
 
-        void getLocalSongs();
+        void getPlaylistCount();
     }
 
     interface View {
-        void showFavoriteTracks(List<Track> tracks);
+        void showFavoriteCount(int count);
 
-        void showLocalSongs(List<Track> songs);
+        void showPlaylistCount(int count);
+
+        void goToFavoriteFragment();
+
+        void goToPlaylistFragment();
+
+        void showSongFragment();
     }
 }

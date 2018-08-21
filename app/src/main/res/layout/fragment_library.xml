@@ -1,174 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_library"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".screen.main.home.HomeFragment">
+    android:background="?android:attr/colorBackground"
+    tools:context=".screen.main.library.LibraryFragment">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraint_favorites"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_100"
-        android:layout_margin="@dimen/dp_8">
+    <ImageView
+        android:id="@+id/image_favorites"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_20"
+        android:src="@drawable/ic_favorite"
+        app:layout_constraintBottom_toTopOf="@+id/image_playlists"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
-        <ImageView
-            android:id="@+id/image_favorites"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
-            android:src="@drawable/ic_favorite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/text_favorites"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_8"
+        android:text="@string/favorites"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/image_favorite_detail"
+        app:layout_constraintStart_toEndOf="@+id/image_favorites"
+        app:layout_constraintTop_toTopOf="@+id/image_favorites" />
 
-        <TextView
-            android:id="@+id/text_favorites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_8"
-            android:text="@string/favorites"
-            android:textSize="@dimen/sp_20"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/image_favorites"
-            app:layout_constraintTop_toTopOf="@+id/image_favorites" />
+    <TextView
+        android:id="@+id/text_num_favorite_tracks"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintBottom_toBottomOf="@+id/image_favorites"
+        app:layout_constraintEnd_toStartOf="@+id/image_favorite_detail"
+        app:layout_constraintStart_toEndOf="@+id/image_favorites"
+        app:layout_constraintTop_toBottomOf="@+id/text_favorites" />
 
-        <TextView
-            android:id="@+id/text_num_favorite_tracks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_8"
-            android:textSize="@dimen/sp_15"
-            app:layout_constraintBottom_toBottomOf="@+id/image_favorites"
-            app:layout_constraintStart_toEndOf="@+id/image_favorites"
-            app:layout_constraintTop_toBottomOf="@+id/text_favorites" />
+    <ImageView
+        android:id="@+id/image_favorite_detail"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_10"
+        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/image_favorites"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/image_favorites" />
 
-        <ImageView
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_favorites"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/image_favorites" />
+    <ImageView
+        android:id="@+id/image_playlists"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:src="@drawable/ic_playlist"
+        app:layout_constraintBottom_toTopOf="@+id/image_songs"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_favorites" />
 
-    </android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/text_playlists"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_8"
+        android:text="@string/playlists"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/image_playlist_detail"
+        app:layout_constraintStart_toEndOf="@+id/image_playlists"
+        app:layout_constraintTop_toTopOf="@+id/image_playlists" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraint_playlists"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_100"
-        android:layout_margin="@dimen/dp_8">
+    <TextView
+        android:id="@+id/text_num_playlists"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintBottom_toBottomOf="@+id/image_playlists"
+        app:layout_constraintEnd_toStartOf="@+id/image_playlist_detail"
+        app:layout_constraintStart_toEndOf="@+id/image_playlists"
+        app:layout_constraintTop_toBottomOf="@+id/text_playlists" />
 
-        <ImageView
-            android:id="@+id/image_playlists"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
-            android:src="@drawable/ic_playlist"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/image_playlist_detail"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/image_playlists"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/image_playlists" />
 
-        <TextView
-            android:id="@+id/text_playlists"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_8"
-            android:text="@string/playlists"
-            android:textSize="@dimen/sp_20"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/image_playlists"
-            app:layout_constraintTop_toTopOf="@+id/image_playlists" />
+    <ImageView
+        android:id="@+id/image_songs"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:src="@drawable/ic_music"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_playlists" />
 
-        <TextView
-            android:id="@+id/text_num_playlists"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_8"
-            android:textSize="@dimen/sp_15"
-            app:layout_constraintBottom_toBottomOf="@+id/image_playlists"
-            app:layout_constraintStart_toEndOf="@+id/image_playlists"
-            app:layout_constraintTop_toBottomOf="@+id/text_playlists" />
+    <TextView
+        android:id="@+id/text_songs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_8"
+        android:text="@string/songs"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/image_song_detail"
+        app:layout_constraintStart_toEndOf="@+id/image_songs"
+        app:layout_constraintTop_toTopOf="@+id/image_songs" />
 
-        <ImageView
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_playlists"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/image_playlists" />
+    <TextView
+        android:id="@+id/text_num_songs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintBottom_toBottomOf="@+id/image_songs"
+        app:layout_constraintEnd_toStartOf="@+id/image_song_detail"
+        app:layout_constraintStart_toEndOf="@+id/image_songs"
+        app:layout_constraintTop_toBottomOf="@+id/text_songs" />
 
-    </android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/image_song_detail"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/image_songs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/image_songs" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraint_songs"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_100"
-        android:layout_margin="@dimen/dp_8">
-
-        <ImageView
-            android:id="@+id/image_songs"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
-            android:src="@drawable/ic_music"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/text_songs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_8"
-            android:text="@string/songs"
-            android:textSize="@dimen/sp_20"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/image_songs"
-            app:layout_constraintTop_toTopOf="@+id/image_songs" />
-
-        <TextView
-            android:id="@+id/text_num_songs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_8"
-            android:textSize="@dimen/sp_15"
-            app:layout_constraintBottom_toBottomOf="@+id/image_songs"
-            app:layout_constraintStart_toEndOf="@+id/image_songs"
-            app:layout_constraintTop_toBottomOf="@+id/text_songs" />
-
-        <ImageView
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_songs"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/image_songs" />
-
-    </android.support.constraint.ConstraintLayout>
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
