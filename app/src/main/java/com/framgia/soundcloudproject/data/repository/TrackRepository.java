@@ -31,6 +31,14 @@ public class TrackRepository implements TrackDataSource.LocalDataSource, TrackDa
         return sTrackRepository;
     }
 
+    @Override
+    public void getOfflineTracksInFolder(String folderName,
+                                         TrackDataSource.OnFetchDataListener<Track> listener) {
+        if(mLocalDataSource != null) {
+            mLocalDataSource.getOfflineTracksInFolder(folderName, listener);
+        }
+    }
+
     /**
      * Track Local
      */
@@ -54,6 +62,16 @@ public class TrackRepository implements TrackDataSource.LocalDataSource, TrackDa
     @Override
     public List<Track> getTrackInPlaylist(Playlist playlist) {
         return mLocalDataSource != null ? mLocalDataSource.getTrackInPlaylist(playlist) : null;
+    }
+
+    @Override
+    public boolean isTrackInFavorite(Track track) {
+        return mLocalDataSource.isTrackInFavorite(track);
+    }
+
+    @Override
+    public boolean isTrackInPlaylist(Track track, Playlist playlist) {
+        return mLocalDataSource.isTrackInPlaylist(track, playlist);
     }
 
     @Override

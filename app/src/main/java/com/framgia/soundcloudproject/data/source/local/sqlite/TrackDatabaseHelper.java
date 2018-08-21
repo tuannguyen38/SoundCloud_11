@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.constant.TrackEntity;
 import com.framgia.soundcloudproject.data.model.Playlist;
 import com.framgia.soundcloudproject.data.model.Track;
@@ -18,6 +19,15 @@ import java.util.List;
  * Created by Hades on 8/10/2018.
  */
 public class TrackDatabaseHelper extends SQLiteOpenHelper {
+    public static final String DOT = ".";
+    public static final String EQUAL = " = ";
+    public static final String EQUAL_CONDITION = " = ? ";
+    public static final String LIKE_CONDITION = " LIKE ?";
+    public static final String INNER_JOIN = " INNER JOIN ";
+    public static final String AND = " AND ";
+    public static final String ON = " ON ";
+    public static final String WHERE = " WHERE ";
+    public static final String SELECT_ALL = "SELECT * FROM ";
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "track.db";
 
@@ -119,7 +129,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
 
     public Track getTrackById(int trackId) {
         SQLiteDatabase database = getReadableDatabase();
-        String selection = TrackEntity.ID + " = ?";
+        String selection = String.format(Constant.DB_QUERY_EQUAL_SELECTION, TrackEntity.ID);
         String[] selectionArgs = new String[]{String.valueOf(trackId)};
         Cursor cursor = database.query(TrackEntry.TABLE_NAME_TRACK,
                 null,
@@ -139,7 +149,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Track> getTrackByTitle(String title) {
         SQLiteDatabase database = getReadableDatabase();
-        String selection = TrackEntity.TITLE + " LIKE ?";
+        String selection = String.format(Constant.DB_QUERY_LIKE_SELECTION, TrackEntity.TITLE);
         String[] selectionArgs = new String[]{title};
         Cursor cursor = database.query(TrackEntry.TABLE_NAME_TRACK,
                 null,
@@ -159,7 +169,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteTrack(Track track) {
         SQLiteDatabase database = getWritableDatabase();
-        String selection = TrackEntity.ID + " = ?";
+        String selection = String.format(Constant.DB_QUERY_EQUAL_SELECTION, TrackEntity.ID);
         String[] selectionArgs = new String[]{String.valueOf(track.getId())};
         database.delete(TrackEntry.TABLE_NAME_TRACK, selection, selectionArgs);
         database.close();
@@ -175,7 +185,8 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
 
     public Playlist getPlaylistById(int playlistId) {
         SQLiteDatabase database = getReadableDatabase();
-        String selection = TrackEntry.COLUMN_NAME_PLAYLIST_ID + " = ?";
+        String selection = String.format(Constant.DB_QUERY_EQUAL_SELECTION,
+                TrackEntry.COLUMN_NAME_PLAYLIST_ID);
         String[] selectionArgs = new String[]{String.valueOf(playlistId)};
         Cursor cursor = database.query(TrackEntry.TABLE_NAME_PLAYLIST,
                 null,
@@ -227,7 +238,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
         values.put(TrackEntry.COLUMN_NAME_PLAYLIST, playlist.getName());
         database.update(TrackEntry.TABLE_NAME_PLAYLIST,
                 values,
-                TrackEntry.COLUMN_NAME_PLAYLIST_ID + " = ?",
+                TrackEntry.COLUMN_NAME_PLAYLIST_ID + EQUAL_CONDITION,
                 new String[]{String.valueOf(playlist.getId())});
         database.close();
     }
@@ -235,10 +246,10 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
     public void deletePlaylist(Playlist playlist) {
         SQLiteDatabase database = getWritableDatabase();
         database.delete(TrackEntry.TABLE_NAME_PLAYLIST_TRACK,
-                TrackEntry.COLUMN_NAME_PLAYLIST_ID + " = ?",
+                TrackEntry.COLUMN_NAME_PLAYLIST_ID + EQUAL_CONDITION,
                 new String[]{String.valueOf(playlist.getId())});
         database.delete(TrackEntry.TABLE_NAME_PLAYLIST,
-                TrackEntry.COLUMN_NAME_PLAYLIST_ID + " = ?",
+                TrackEntry.COLUMN_NAME_PLAYLIST_ID + EQUAL_CONDITION,
                 new String[]{String.valueOf(playlist.getId())});
         database.close();
     }
@@ -253,15 +264,23 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Track> getAllTracksInPlaylist(Playlist playlist) {
-        String query = "SELECT * FROM " +
-                TrackEntry.TABLE_NAME_PLAYLIST +
-                " INNER JOIN " + TrackEntry.TABLE_NAME_PLAYLIST_TRACK +
-                " ON " +
-                TrackEntry.TABLE_NAME_PLAYLIST + "." + TrackEntry.COLUMN_NAME_PLAYLIST_ID +
-                " = " +
-                TrackEntry.TABLE_NAME_PLAYLIST_TRACK + "." + TrackEntry.COLUMN_NAME_PLAYLIST_ID +
-                " WHERE " +
-                TrackEntry.COLUMN_NAME_PLAYLIST_ID + " = ?";
+        String query = new StringBuilder()
+                .append(SELECT_ALL)
+                .append(TrackEntry.TABLE_NAME_PLAYLIST)
+                .append(INNER_JOIN)
+                .append(TrackEntry.TABLE_NAME_PLAYLIST_TRACK)
+                .append(ON)
+                .append(TrackEntry.TABLE_NAME_PLAYLIST)
+                .append(DOT)
+                .append(TrackEntry.COLUMN_NAME_PLAYLIST_ID)
+                .append(EQUAL)
+                .append(TrackEntry.TABLE_NAME_PLAYLIST_TRACK)
+                .append(DOT)
+                .append(TrackEntry.COLUMN_NAME_PLAYLIST_ID)
+                .append(WHERE)
+                .append(TrackEntry.COLUMN_NAME_PLAYLIST_ID)
+                .append(EQUAL_CONDITION)
+                .toString();
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(playlist.getId())});
         List<Track> tracks = new ArrayList<>();
@@ -274,15 +293,23 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public int getTracksInPlaylistCount(Playlist playlist) {
-        String query = "SELECT * FROM " +
-                TrackEntry.TABLE_NAME_PLAYLIST +
-                " INNER JOIN " + TrackEntry.TABLE_NAME_PLAYLIST_TRACK +
-                " ON " +
-                TrackEntry.TABLE_NAME_PLAYLIST + "." + TrackEntry.COLUMN_NAME_PLAYLIST_ID +
-                " = " +
-                TrackEntry.TABLE_NAME_PLAYLIST_TRACK + "." + TrackEntry.COLUMN_NAME_PLAYLIST_ID +
-                " WHERE " +
-                TrackEntry.COLUMN_NAME_PLAYLIST_ID + " = ?";
+        String query = new StringBuilder()
+                .append(SELECT_ALL)
+                .append(TrackEntry.TABLE_NAME_PLAYLIST)
+                .append(INNER_JOIN)
+                .append(TrackEntry.TABLE_NAME_PLAYLIST_TRACK)
+                .append(ON)
+                .append(TrackEntry.TABLE_NAME_PLAYLIST)
+                .append(DOT)
+                .append(TrackEntry.COLUMN_NAME_PLAYLIST_ID)
+                .append(EQUAL)
+                .append(TrackEntry.TABLE_NAME_PLAYLIST_TRACK)
+                .append(DOT)
+                .append(TrackEntry.COLUMN_NAME_PLAYLIST_ID)
+                .append(WHERE)
+                .append(TrackEntry.COLUMN_NAME_PLAYLIST_ID)
+                .append(EQUAL_CONDITION)
+                .toString();
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(playlist.getId())});
         int count = cursor.getCount();
@@ -291,10 +318,31 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    public boolean isTrackInPlaylist(Track track, Playlist playlist) {
+        SQLiteDatabase database = getReadableDatabase();
+        String selection = new StringBuilder()
+                .append(TrackEntity.ID).append(EQUAL_CONDITION)
+                .append(AND)
+                .append(TrackEntry.COLUMN_NAME_PLAYLIST_ID).append(EQUAL_CONDITION)
+                .toString();
+        String[] selectionArgs = new String[]{
+                String.valueOf(track.getId()),
+                String.valueOf(playlist.getId())};
+        Cursor cursor = database.query(TrackEntry.TABLE_NAME_PLAYLIST_TRACK, null,
+                selection, selectionArgs, null, null, null);
+        boolean check = (cursor.getCount() > 0);
+        cursor.close();
+        database.close();
+        return check;
+    }
+
     public void removeTrackFromPlaylist(Track track, Playlist playlist) {
         SQLiteDatabase database = getWritableDatabase();
-        String selection = TrackEntry.COLUMN_NAME_PLAYLIST_ID + " = ?" +
-                " AND " + TrackEntity.ID + " = ?";
+        String selection = new StringBuilder()
+                .append(TrackEntry.COLUMN_NAME_PLAYLIST_ID).append(EQUAL_CONDITION)
+                .append(AND)
+                .append(TrackEntity.ID).append(EQUAL_CONDITION)
+                .toString();
         String[] selectionArgs = {String.valueOf(track.getId()), String.valueOf(playlist.getId())};
         database.delete(TrackEntry.TABLE_NAME_PLAYLIST_TRACK, selection, selectionArgs);
         database.close();
@@ -308,15 +356,28 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+    public boolean isTrackInFavorite(Track track) {
+        SQLiteDatabase database = getReadableDatabase();
+        String selection = String.format(Constant.DB_QUERY_EQUAL_SELECTION, TrackEntity.ID);
+        String[] selectionArgs = new String[]{String.valueOf(track.getId())};
+        Cursor cursor = database.query(TrackEntry.TABLE_NAME_FAVORITE, null,
+                selection, selectionArgs, null, null, null);
+        boolean check = (cursor.getCount() > 0);
+        cursor.close();
+        database.close();
+        return check;
+    }
+
     public List<Track> getAllFavoriteTrack() {
         SQLiteDatabase database = getReadableDatabase();
-        String query = "SELECT * FROM " +
-                TrackEntry.TABLE_NAME_TRACK +
-                " INNER JOIN " + TrackEntry.TABLE_NAME_FAVORITE +
-                " ON " +
-                TrackEntry.TABLE_NAME_TRACK + "." + TrackEntity.ID +
-                " = " +
-                TrackEntry.TABLE_NAME_FAVORITE + "." + TrackEntity.ID;
+        String query = new StringBuilder()
+                .append(SELECT_ALL).append(TrackEntry.TABLE_NAME_TRACK)
+                .append(INNER_JOIN).append(TrackEntry.TABLE_NAME_FAVORITE)
+                .append(ON)
+                .append(TrackEntry.TABLE_NAME_TRACK).append(DOT).append(TrackEntity.ID)
+                .append(EQUAL)
+                .append(TrackEntry.TABLE_NAME_FAVORITE).append(DOT).append(TrackEntity.ID)
+                .toString();
         Cursor cursor = database.rawQuery(query, null);
         List<Track> tracks = new ArrayList<>();
         while (cursor.moveToNext()) {
@@ -339,7 +400,7 @@ public class TrackDatabaseHelper extends SQLiteOpenHelper {
 
     public void removeTrackFromFavorite(Track track) {
         SQLiteDatabase database = getWritableDatabase();
-        String selection = TrackEntity.ID + " = ?";
+        String selection = String.format(Constant.DB_QUERY_EQUAL_SELECTION, TrackEntity.ID);
         String[] selectionArgs = {String.valueOf(track.getId())};
         database.delete(TrackEntry.TABLE_NAME_FAVORITE, selection, selectionArgs);
         database.close();
