@@ -34,4 +34,8 @@ public class StringUtil {
                 TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds)));
     }
+
+    public static String formatStringNumberOfItems(int num, String itemName) {
+        return String.format("%d %s", num, itemName);
+    }
 }
