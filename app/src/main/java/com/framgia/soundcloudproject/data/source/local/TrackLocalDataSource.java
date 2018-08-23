@@ -154,6 +154,9 @@ public class TrackLocalDataSource implements TrackDataSource.LocalDataSource {
     @Override
     public void addTrackToPlaylist(int playlistId, TrackDataSource.OnQueryDatabaseListener listener, Track track) {
         Playlist playlist = mDatabaseHelper.getPlaylistById(playlistId);
+        if (mDatabaseHelper.getTrackById(track.getId()) == null) {
+            mDatabaseHelper.insertTrack(track);
+        }
         if (playlist == null) {
             listener.onQuerySuccess(mContext.getString(R.string.error_playlist_not_exist));
         } else {
