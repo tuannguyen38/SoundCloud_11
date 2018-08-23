@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.framgia.soundcloudproject.R;
+import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.constant.LoopType;
 import com.framgia.soundcloudproject.constant.ShuffleMode;
 import com.framgia.soundcloudproject.constant.State;
@@ -44,6 +46,7 @@ public class TrackService extends Service {
     public static final String ACTION_NEXT_TRACK = "ACTION_NEXT_TRACK";
     public static final String ACTION_PREVIOUS_TRACK = "ACTION_PREVIOUS_TRACK";
     public static final String ACTION_OPEN_PLAY_TRACK_ACTIVITY = "ACTION_OPEN_PLAY_TRACK_ACTIVITY";
+    public static final int SECONDS_FACTOR = 1000;
 
     private Bitmap mBitmap;
     private static final int NOTIFY_ID = 1;
@@ -53,6 +56,8 @@ public class TrackService extends Service {
     private PendingIntent mPendingState;
     private PendingIntent mPendingNext;
     private NotificationCompat.Builder mBuilder;
+    private Handler mTimerHandler;
+    private Runnable mRunnable;
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -215,7 +220,7 @@ public class TrackService extends Service {
                 mChannel = new NotificationChannel(channelID, channelName, importance);
                 mChannel.setDescription(channelDescription);
                 mChannel.enableVibration(false);
-                mChannel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+                mChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
                 notificationManager.createNotificationChannel(mChannel);
             }
         }
@@ -227,7 +232,7 @@ public class TrackService extends Service {
                 .asBitmap()
                 .load(getCurrentTrack().getArtworkUrl())
                 .apply(new RequestOptions().error(R.drawable.ic_holder))
-                .into(new SimpleTarget<Bitmap>() {
+                .into(new SimpleTarget<Bitmap>(Constant.DEFAULT_NOTIFY_SIZE, Constant.DEFAULT_NOTIFY_SIZE) {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource,
                                                 @Nullable Transition<? super Bitmap> transition) {
@@ -271,6 +276,41 @@ public class TrackService extends Service {
         } else {
             mBuilder.setLargeIcon(mBitmap);
         }
+    }
+
+    public int getCurrentPosition() {
+        if (mTrackPlayerManager != null) {
+            return mTrackPlayerManager.getCurrentPosition();
+        }
+        return 0;
+    }
+
+    public int getDuration() {
+        if (mTrackPlayerManager != null) {
+            return mTrackPlayerManager.getDuration();
+        }
+        return 0;
+    }
+
+    public void startTimer(long delay) {
+        if (mTrackPlayerManager == null) return;
+        mTimerHandler = new Handler();
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mTrackPlayerManager.release();
+                stopForeground(true);
+                stopSelf();
+            }
+        };
+        mTimerHandler.postDelayed(mRunnable, delay * SECONDS_FACTOR);
+    }
+
+    public void cancelTimer() {
+        if (mTrackPlayerManager == null || mTimerHandler == null) return;
+        mTimerHandler.removeCallbacks(mRunnable);
+        mTimerHandler = null;
+        mRunnable = null;
     }
 
     public class LocalBinder extends Binder {

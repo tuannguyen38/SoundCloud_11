@@ -130,4 +130,8 @@ public class LibraryFragment extends Fragment implements LibraryContract.View, V
             view.findViewById(id).setOnClickListener(this);
         }
     }
+
+    public void refresh() {
+        mPresenter.getFavoriteCount();
+    }
 }

@@ -10,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.framgia.soundcloudproject.R;
+import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.data.model.Genre;
 
 import java.util.List;
@@ -62,7 +64,9 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
 
         public void bindView(final Genre genre, final OnGenreClickListener listener) {
             mTextViewGenre.setText(genre.getGenreString());
-            Glide.with(mImageViewGenre).load(genre.getGenreImage()).into(mImageViewGenre);
+            Glide.with(mImageViewGenre).load(genre.getGenreImage())
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(mImageViewGenre);
             mImageViewGenre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
