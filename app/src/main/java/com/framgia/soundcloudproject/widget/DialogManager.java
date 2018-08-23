@@ -79,7 +79,7 @@ public class DialogManager implements DialogInterface {
             }
         });
 
-        RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_playlist);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_dialog_playlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));

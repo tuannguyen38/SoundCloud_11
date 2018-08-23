@@ -4,10 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.constant.TabEntity;
 import com.framgia.soundcloudproject.screen.main.download.DownloadFragment;
-import com.framgia.soundcloudproject.screen.main.genredetail.GenreDetailFragment;
 import com.framgia.soundcloudproject.screen.main.home.HomeFragment;
 import com.framgia.soundcloudproject.screen.main.library.LibraryFragment;
 
@@ -17,6 +15,8 @@ import com.framgia.soundcloudproject.screen.main.library.LibraryFragment;
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private static final int TAB_COUNT = 3;
+    private DownloadFragment mDownloadFragment;
+    private LibraryFragment mLibraryFragment;
 
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -27,18 +27,24 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case TabEntity.TAB_HOME:
-                // Update next by getInstance()
                 return HomeFragment.newInstance();
             case TabEntity.TAB_DOWNLOAD:
-                // Update next by getInstance()
-                return new DownloadFragment();
+                mDownloadFragment = new DownloadFragment();
+                return mDownloadFragment;
             case TabEntity.TAB_LIBRARY:
-                // Update next by getInstance()
-                return new LibraryFragment();
+                mLibraryFragment = new LibraryFragment();
+                return mLibraryFragment;
             default:
-                // Update next by getInstance()
                 return HomeFragment.newInstance();
         }
+    }
+
+    public void updateFavoriteData() {
+        mLibraryFragment.refresh();
+    }
+
+    public void updateDownloadData() {
+        mDownloadFragment.refresh();
     }
 
     @Override

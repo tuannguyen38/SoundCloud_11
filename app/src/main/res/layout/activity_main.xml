@@ -87,7 +87,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_65"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_white">
+        android:background="@color/color_white"
+        android:visibility="gone">
 
         <View
             android:layout_width="match_parent"
@@ -184,6 +185,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
             app:srcCompat="@drawable/ic_skip_next" />
+
+        <ProgressBar
+            android:id="@+id/progress_loading"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:theme="@style/ProgressBarControlStyle"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/image_control_next"
+            app:layout_constraintEnd_toStartOf="@+id/image_control_next"
+            app:layout_constraintStart_toEndOf="@+id/image_control_previous"
+            app:layout_constraintTop_toTopOf="@+id/image_control_next" />
 
     </android.support.constraint.ConstraintLayout>
 

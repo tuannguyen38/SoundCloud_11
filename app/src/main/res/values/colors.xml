@@ -12,5 +12,8 @@
     <color name="color_gray_300">#dedede</color>
     <color name="color_bismark">#4E6988</color>
     <color name="color_black">#000000</color>
+    <color name="color_accent_200">#536dfe</color>
+    <color name="color_pink_500">#e91e63</color>
+    <color name="color_yellow_600">#fdd835</color>
 
 </resources>

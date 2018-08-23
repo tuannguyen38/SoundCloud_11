@@ -70,7 +70,7 @@ public class GenreDetailFragment extends Fragment implements GenreDetailContract
         mAdapter = new GenreDetailAdapter(getContext(), mTrackListener);
         mRecyclerTracks = view.findViewById(R.id.recycler_genre_detail);
         mRecyclerTracks.setLayoutManager(linearLayoutManager);
-        mRecyclerTracks.setHasFixedSize(true);
+        mRecyclerTracks.setHasFixedSize(false);
         mRecyclerTracks.addItemDecoration(
                 new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         mRecyclerTracks.setAdapter(mAdapter);
