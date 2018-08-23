@@ -1,5 +1,6 @@
 package com.framgia.soundcloudproject.screen.main.download;
 
+import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.data.model.Track;
 import com.framgia.soundcloudproject.data.repository.TrackRepository;
 import com.framgia.soundcloudproject.data.source.TrackDataSource;
@@ -19,7 +20,7 @@ public class DownloadPresenter implements DownloadContract.Presenter,
 
     @Override
     public void getOfflineTracks() {
-        mTrackRepository.getOfflineTracks(this);
+        mTrackRepository.getOfflineTracksInFolder(Constant.DOWNLOAD_DIRECTORY, this);
     }
 
     @Override

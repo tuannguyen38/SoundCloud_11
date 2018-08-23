@@ -28,8 +28,10 @@ public class Constant {
     public static final String STORAGE = "/storage/";
     public static final String DOWNLOAD_DIRECTORY = "SoundCloud11";
     public static final String PERCENT = "%";
-
     public static final String DB_QUERY_EQUAL_SELECTION = " %s = ? ";
     public static final String DB_QUERY_LIKE_SELECTION = " %s LIKE ? ";
     public static final String DB_SORT_COLUMN_ASC = " %s ASC ";
+    public static final String WILD_CARD = "%SoundCloud11%";
+    public static final int DEFAULT_ITEM_SIZE = 72;
+    public static final int DEFAULT_NOTIFY_SIZE = 100;
 }

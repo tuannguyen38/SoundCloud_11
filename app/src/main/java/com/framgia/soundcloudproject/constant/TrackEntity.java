@@ -23,7 +23,9 @@ import android.support.annotation.StringDef;
         TrackEntity.TITLE,
         TrackEntity.URI,
         TrackEntity.PUBLISHER_METADATA,
-        TrackEntity.PUBLISHER_ARTIST}
+        TrackEntity.PUBLISHER_ARTIST,
+        TrackEntity.LARGE_IMAGE_SIZE,
+        TrackEntity.BETTER_IMAGE_SIZE}
 )
 
 public @interface TrackEntity {
@@ -37,7 +39,7 @@ public @interface TrackEntity {
     String DOWNLOADABLE = "downloadable";
     String DOWNLOAD_COUNT = "download_count";
     String DOWNLOAD_URL = "download_url";
-    String FULL_DURATION = "full_duration";
+    String FULL_DURATION = "duration";
     String GENRE = "genre";
     String ID = "id";
     String LIKE_COUNT = "likes_count";
@@ -47,4 +49,6 @@ public @interface TrackEntity {
     String DISPLAY_DATE = "display_date";
     String PUBLISHER_METADATA = "publisher_metadata";
     String PUBLISHER_ARTIST = "artist";
+    String LARGE_IMAGE_SIZE = "large";
+    String BETTER_IMAGE_SIZE = "original";
 }
