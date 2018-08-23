@@ -23,6 +23,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".screen.main.MainActivity" />
+
+        <activity
+            android:name=".screen.main.playtrack.PlayTrackActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".screen.main.MainActivity" />
+
+        <service
+            android:name=".service.TrackService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>

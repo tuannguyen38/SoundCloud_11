@@ -117,7 +117,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     }
 
     public void submitQueryText(String query) {
-        mQuery = query;
+        mAdapter.clearData();
         mPresenter.searchTracks(query, 0);
     }
 }

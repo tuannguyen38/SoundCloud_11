@@ -3,6 +3,7 @@ package com.framgia.soundcloudproject.screen.main.genredetail;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,8 +13,12 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.framgia.soundcloudproject.R;
+import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.data.model.Track;
+import com.framgia.soundcloudproject.data.source.remote.TrackDownloadManager;
 import com.framgia.soundcloudproject.screen.main.TrackListener;
 import com.framgia.soundcloudproject.utils.StringUtil;
 
@@ -63,6 +68,13 @@ public class GenreDetailAdapter extends RecyclerView.Adapter<GenreDetailAdapter.
         notifyItemRangeInserted(startPosition, tracks.size());
     }
 
+    public void clearData() {
+        if (mTracks != null) {
+            mTracks.clear();
+            notifyDataSetChanged();
+        }
+    }
+
     /**
      * GenreDetailViewHolder
      */
@@ -100,7 +112,12 @@ public class GenreDetailAdapter extends RecyclerView.Adapter<GenreDetailAdapter.
         public void bindData(int position) {
             if (mTracks == null) return;
             mCurrentTrack = mTracks.get(position);
-            Glide.with(mContext).load(mCurrentTrack.getArtworkUrl()).into(mImvTrack);
+            Glide.with(mContext).load(mCurrentTrack.getArtworkUrl())
+                    .apply(new RequestOptions()
+                            .override(Constant.DEFAULT_ITEM_SIZE)
+                            .centerCrop()
+                            .error(R.drawable.ic_holder))
+                    .into(mImvTrack);
             mTvTitle.setText(mCurrentTrack.getTitle());
             mTvArtist.setText(mCurrentTrack.getPublisherAlbumTitle());
             mTvDownloadCounts.setText(String.valueOf(mCurrentTrack.getDownloadCount()));
@@ -131,7 +148,7 @@ public class GenreDetailAdapter extends RecyclerView.Adapter<GenreDetailAdapter.
                             mTrackListener.onAddToNextUp(mCurrentTrack);
                             return true;
                         case R.id.action_download:
-                            // TODO
+                            mTrackListener.onDownloadTrack(mCurrentTrack);
                             return true;
                         case R.id.action_add_to_playlist:
                             mTrackListener.onAddToPlaylist(mCurrentTrack);
