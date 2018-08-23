@@ -7,6 +7,7 @@ import com.framgia.soundcloudproject.constant.Constant;
 import com.framgia.soundcloudproject.constant.TrackEntity;
 import com.framgia.soundcloudproject.data.model.Track;
 import com.framgia.soundcloudproject.data.source.TrackDataSource;
+import com.framgia.soundcloudproject.utils.StringUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,9 +66,10 @@ public class FetchTrackFromUrl extends AsyncTask<String, Void, List<Track>> {
             JSONObject jsonObject = jsonArray.getJSONObject(i).getJSONObject(TrackEntity.TRACK);
 
             String artworkUrl = jsonObject.optString(TrackEntity.ARTWORK_URL);
-            if (artworkUrl.isEmpty()) {
-                artworkUrl = jsonObject.getJSONObject(TrackEntity.USER)
-                        .optString(TrackEntity.AVATAR_URL);
+            if (!artworkUrl.isEmpty()) {
+                artworkUrl = artworkUrl.replace(TrackEntity.LARGE_IMAGE_SIZE, TrackEntity.BETTER_IMAGE_SIZE);
+            } else {
+                artworkUrl = jsonObject.getJSONObject(TrackEntity.USER).optString(TrackEntity.AVATAR_URL);
             }
             String description = jsonObject.optString(TrackEntity.DESCRIPTION);
             boolean downloadable = jsonObject.getBoolean(TrackEntity.DOWNLOADABLE);

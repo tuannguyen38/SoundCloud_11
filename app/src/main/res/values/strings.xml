@@ -41,4 +41,19 @@
     <string name="channel_description">my_package_first_channel</string>
     <string name="channel_id">my_package_channel_1</string>
     <string name="next_up">Next up</string>
+    <string name="msg_download_error">Download Error</string>
+    <string name="msg_downloading">Downloading</string>
+    <string name="msg_sleeping">Sleeping in %d minutes</string>
+    <string name="msg_cancel_sleeping">Cancel Sleeping</string>
+    <string name="error_copyright">Can\'t download track due to copyright</string>
+    <string name="sleep_timer">SLEEP TIMER</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
+    <string name="miles_5">5</string>
+    <string name="miles_15">15</string>
+    <string name="miles_30">30</string>
+    <string name="miles_45">45</string>
+    <string name="miles_60">60</string>
+    <string name="miles_120">120</string>
+    <string name="msg_removed">Removed</string>
 </resources>
