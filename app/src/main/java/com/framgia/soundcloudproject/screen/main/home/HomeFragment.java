@@ -22,7 +22,6 @@ public class HomeFragment extends Fragment implements HomeContract.View, GenreAd
     private HomeContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
     private GenreAdapter mGenreAdapter;
-    private GenreDetailFragment detailFragment;
 
     public HomeFragment() {
     }
@@ -58,9 +57,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, GenreAd
     }
 
     private void gotoDetailFragment(String genre) {
-        if (detailFragment == null) {
-            detailFragment = GenreDetailFragment.newInstance(genre);
-        }
+        GenreDetailFragment detailFragment = GenreDetailFragment.newInstance(genre);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_genre_container, detailFragment)
                 .addToBackStack(null)

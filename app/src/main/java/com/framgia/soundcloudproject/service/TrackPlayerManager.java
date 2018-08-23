@@ -45,4 +45,8 @@ public interface TrackPlayerManager {
     void changeLoopType();
 
     void changeShuffleState();
+
+    int getCurrentPosition();
+
+    int getDuration();
 }

@@ -137,7 +137,7 @@ public class TrackPlayerController implements TrackPlayerManager {
             notifyStateChanged(State.INVALID);
             return;
         }
-        if (mCurrentTrackPosition == position) return;
+        if ((tracks == null || tracks.length == 0) && mCurrentTrackPosition == position) return;
         if (tracks != null && tracks.length != 0) {
             mTracks = new ArrayList<>();
             Collections.addAll(mTracks, tracks);
@@ -150,7 +150,9 @@ public class TrackPlayerController implements TrackPlayerManager {
     public void addToNextUp(Track track) {
         if (mTracks == null || mTracks.isEmpty()) return;
         mTracks.add(track);
-        mOriginalTracks.add(track);
+        if (mShuffleMode == ShuffleMode.ON) {
+            mOriginalTracks.add(track);
+        }
     }
 
     @Override
@@ -232,7 +234,7 @@ public class TrackPlayerController implements TrackPlayerManager {
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             String path = mTracks.get(mCurrentTrackPosition).getUri();
             String url;
-            if (path.contains(Constant.STORAGE)) {
+            if (path.contains(Constant.DOWNLOAD_DIRECTORY)) {
                 url = path;
             } else {
                 url = StringUtil.formatTrackStreamURL(mTracks.get(mCurrentTrackPosition).getUri());
@@ -243,6 +245,8 @@ public class TrackPlayerController implements TrackPlayerManager {
             mMediaPlayer.setOnPreparedListener(mOnPrepared);
             mMediaPlayer.setOnErrorListener(mErrorListener);
         } catch (IOException e) {
+            notifyStateChanged(State.INVALID);
+            if (mCurrentTrackPosition < mTracks.size()) playNextTrack();
             Logger.getLogger(e.toString());
         }
     }
@@ -250,21 +254,31 @@ public class TrackPlayerController implements TrackPlayerManager {
     private void handlePlayTrackWithLoopType() {
         switch (mLoopType) {
             case LoopType.NO_LOOP:
-                mMediaPlayer.setLooping(false);
                 playNextTrack();
                 break;
             case LoopType.LOOP_ONE:
-                mMediaPlayer.setLooping(true);
-                prepareTrack();
+                mMediaPlayer.start();
+                notifyStateChanged(State.PLAYING);
                 break;
             case LoopType.LOOP_LIST:
-                mMediaPlayer.setLooping(false);
                 if (mCurrentTrackPosition == mTracks.size() - 1) {
                     mCurrentTrackPosition = -1;
                 }
                 playNextTrack();
                 break;
         }
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        if (mMediaPlayer == null) return 0;
+        return mMediaPlayer.getCurrentPosition();
+    }
+
+    @Override
+    public int getDuration() {
+        if (mMediaPlayer == null) return 0;
+        return mMediaPlayer.getDuration();
     }
 
     public interface TrackInfoListener {
